@@ -91,6 +91,12 @@ cat << EOF > ${WORK_DIR}/Linux_for_Tegra/rootfs/etc/sudoers.d/${JETSON_USR}
 ${JETSON_USR} ALL=(ALL) NOPASSWD: ALL
 EOF
 
+#########
+echo "Set Nvidia repo platform (<SOC>)"
+
+pushd ${WORK_DIR}/Linux_for_Tegra/rootfs/etc/apt/sources.list.d
+sed -i "s/<SOC>/$JETSON_PLAT/g" nvidia-l4t-apt-source.list
+popd
 
 ##########
 # if you want to modify BSP, please do that here
