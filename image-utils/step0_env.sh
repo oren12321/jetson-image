@@ -5,6 +5,8 @@
 #
 # step 0: set up environment
 
+export DEBIAN_FRONTEND=noninteractive
+
 ##########
 echo "Set target release version"
 
