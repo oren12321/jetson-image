@@ -53,6 +53,8 @@ else
     ./jetson-disk-image-creator.sh -o ${ICACHE_DIR}/${IMAGE} -b ${JETSON_BOARD} -r ${JETSON_BOARD_REV}
 fi
 
+popd
+
 ##########
 linfo "umount $1 if required"
 

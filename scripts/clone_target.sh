@@ -5,7 +5,7 @@
 #
 # Description: clone Jetson target to image file.
 #
-#/ Usage: ./clone_target.sh <clone_name>.img
+#/ Usage: ./clone_target.sh <clone_name>.img [--update-bootloader]
 #/
 
 
@@ -40,4 +40,11 @@ linfo "cloning target ${ART_DIR}/$1"
 pushd ${ICACHE_DIR}/Linux_for_Tegra
 
 ./flash.sh -r -k APP -G ${ART_DIR}/$1 ${JETSON_BOARD} ${JETSON_STORAGE}
+
+if [ "$2" = "--update-bootloader" ]; then
+    linfo "updating system.img with ${ART_DIR}/$1"
+    cp ${ART_DIR}/$1 bootloader/system.img
+fi
+
+popd
 
