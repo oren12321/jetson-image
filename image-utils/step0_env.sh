@@ -38,6 +38,14 @@ JETSON_REL=r32.6
 JETSON_BSP=jetson_linux_r32.6.1_aarch64.tbz2
 JETSON_BSP_URL=https://developer.nvidia.com/embedded/l4t/r32_release_v6.1/t186/jetson_linux_r32.6.1_aarch64.tbz2
 
+echo "Set kernel platfrom"
+
+LINARO_ARCHIVE=gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz
+LINARO_ARCHIVE_URL=http://releases.linaro.org/components/toolchain/binaries/7.3-2018.05/aarch64-linux-gnu/gcc-linaro-7.3.1-2018.05-x86_64_aarch64-linux-gnu.tar.xz
+
+DRIVER_SOURCES_ARCHIVE=public_sources.tbz2
+DRIVER_SOURCES_ARCHIVE_URL=https://developer.nvidia.com/embedded/l4t/r32_release_v6.1/sources/t186/public_sources.tbz2
+
 echo "Set target directories"
 
 ROOT_DIR="${HOME}/jetson-custom/rootfs"
