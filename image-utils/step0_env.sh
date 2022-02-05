@@ -16,12 +16,16 @@ RELEASE=bionic
 # REPO=http://mirror.misakamikoto.network/ubuntu-ports
 
 # If REPO is empty, http://ports.ubuntu.com/ubuntu-ports will be used
+if [ -z "${REPO}"]
+then
+    REPO=http://ports.ubuntu.com/ubuntu-ports
+fi
 
 # Use below script to get the fastest repo
-if [ -z "${REPO}" ]
-then
-    REPO=$(./find_mirrors.sh arm64 bionic main speed | sort -k 1 | head -n 1 | awk '{print $2}')
-fi
+# if [ -z "${REPO}" ]
+# then
+#     REPO=$(./find_mirrors.sh arm64 bionic main speed | sort -k 1 | head -n 1 | awk '{print $2}')
+# fi
 
 echo "Set target platform"
 
