@@ -32,7 +32,7 @@ if [ ! -f ${KCACHE_DIR}/${LINARO_ARCHIVE} ]; then
 fi
 
 mkdir -p ${KCACHE_DIR}/l4t-gcc
-tar -xvf ${LINARO_ARCHIVE} -C ${KCACHE_DIR}/l4t-gcc --strip-components 1
+tar -xvf ${KCACHE_DIR}/${LINARO_ARCHIVE} -C ${KCACHE_DIR}/l4t-gcc --strip-components 1
 
 export CROSS_COMPILE=${KCACHE_DIR}/l4t-gcc/bin/aarch64-linux-gnu-
 
