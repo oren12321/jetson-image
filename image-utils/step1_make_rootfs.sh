@@ -37,6 +37,9 @@ apt install -y --no-install-recommends \
 ##########
 echo "Debootstrap a base"
 
+# Remove ROOTFS_DIR content from previous runs
+rm -rf ${ROOTFS_DIR}/*
+
 # create a zip file for laster use
 # delete the zip file to get new version of packages
 # however, app packages will be updated later
