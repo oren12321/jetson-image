@@ -1,31 +1,26 @@
 #! /usr/bin/env bash
 #
-# Author: Bert Van Vreckem <bert.vanvreckem@gmail.com>
+# Author: oren12321 <oren12321@gmail.com>
+# Based on: vuquangtrong/jetson-custom-image
 #
-#/ Usage: SCRIPTNAME [OPTIONS]... [ARGUMENTS]...
+# Description: setup environment for Jetson image/kernel utils.
+#
+#/ Usage: ./setup_env.sh
 #/
-#/ 
-#/ OPTIONS
-#/   -h, --help
-#/                Print this help message
-#/
-#/ EXAMPLES
-#/  
 
 
 #{{{ Bash settings
-# abort on nonzero exitstatus
-set -o errexit
-# abort on unbound variable
-set -o nounset
-# don't hide errors within pipes
-set -o pipefail
+set -euo pipefail
 #}}}
-#{{{ Variables
+
+#{{{ Globals
 readonly script_name=$(basename "${0}")
 readonly script_dir=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 IFS=$'\t\n'   # Split on newlines and tabs (but not on spaces)
+#}}}
 
+#{{{ Imports
+source ${script_dir}/log.sh
 #}}}
 
 main() {
@@ -40,18 +35,6 @@ main() {
 }
 
 #{{{ Helper functions
-
-lerror() {
-    printf "\e[1;31m%s\e[0m\n" "${*}" 1>&2
-}
-
-linfo() {
-    printf "\e[1;32m%s\e[0m\n" "${*}"
-}
-
-lwarning() {
-    printf "\e[1;33m%s\e[0m\n" "${*}"
-}
 
 validate_root() {
     if [ "x$(whoami)" != "xroot" ]; then
@@ -95,6 +78,4 @@ create_workspace() {
 #}}}
 
 main "${@}"
-
-# cursor: 33 del
 
