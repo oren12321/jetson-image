@@ -36,7 +36,7 @@ fi
 
 if [ ! -d ${ICACHE_DIR}/Linux_for_Tegra ]; then
     echo "Extract JETSON_BSP"
-    tar jxpf ${JETSON_BSP} -C ${ICACHE_DIR}
+    tar jxpf ${ICACHE_DIR}/${JETSON_BSP} -C ${ICACHE_DIR}
 fi
 
 ##########
