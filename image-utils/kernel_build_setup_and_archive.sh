@@ -94,7 +94,7 @@ make ARCH=${ARCH} O=${TEGRA_KERNEL_OUT} modules_install INSTALL_MOD_PATH=${ICACH
 popd
 
 echo "Archiving kernel modules and applying binaries"
-tar --owner root --group root -cvjf ${KCACHE_DIR}/kernel_supplements_${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 ${KCACHE_DIR}/Linux_for_Tegra/rootfs/lib/modules
+tar --owner root --group root -cvjf ${KCACHE_DIR}/kernel_supplements_${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 ${ICACHE_DIR}/Linux_for_Tegra/rootfs/lib/modules
 
 cp -a ${KCACHE_DIR}/kernel_supplements_${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 ${ICACHE_DIR}/Linux_for_Tegra/kernel/kernel_supplements.tbz2
 pushd ${ICACHE_DIR}/Linux_for_Tegra
