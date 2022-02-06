@@ -52,7 +52,7 @@ popd
 pushd ${KCACHE_DIR}/Linux_for_Tegra/source/public/
 tar -xvjf kernel_src.tbz2 -C ${KCACHE_DIR}/kernel_src
 popd
-rm -rf ${KCAHCE_DIR}/Linux_for_Tegra
+rm -rf ${KCACHE_DIR}/Linux_for_Tegra
 
 ##########
 echo "Prepare kernel build env"
