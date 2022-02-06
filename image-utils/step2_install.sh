@@ -32,20 +32,20 @@ echo "Mount dependency points"
 # if script halts before unmounting these point, you have to unmount manually
 # that is the reason, this script is called in a wrapper, see step2_customize_rootfs.sh
 for mnt in sys proc dev dev/pts tmp; do
-    mount -o bind "/$mnt" "${ROOT_DIR}/$mnt"
+    mount -o bind "/$mnt" "${ROOTFS_DIR}/$mnt"
 done
 
 ##########
 echo "Setup locale"
 
-chroot ${ROOT_DIR} locale-gen en_US
-chroot ${ROOT_DIR} locale-gen en_US.UTF-8
-chroot ${ROOT_DIR} update-locale LC_ALL=en_US.UTF-8
+chroot ${ROOTFS_DIR} locale-gen en_US
+chroot ${ROOTFS_DIR} locale-gen en_US.UTF-8
+chroot ${ROOTFS_DIR} update-locale LC_ALL=en_US.UTF-8
 
 ##########
 echo "Add nameserver"
 
-cat << EOF > ${ROOT_DIR}/etc/resolv.conf
+cat << EOF > ${ROOTFS_DIR}/etc/resolv.conf
 nameserver 8.8.8.8
 nameserver 8.8.4.4
 EOF
@@ -53,12 +53,12 @@ EOF
 ##########
 echo "Add repos for ${ARCH}"
 
-cat << EOF > ${ROOT_DIR}/etc/apt/apt.conf.d/99verify-peer.conf
+cat << EOF > ${ROOTFS_DIR}/etc/apt/apt.conf.d/99verify-peer.conf
 Acquire::https::Verify-Peer "false";
 Acquire::https::Verify-Host "false";
 EOF
 
-cat << EOF > ${ROOT_DIR}/etc/apt/sources.list
+cat << EOF > ${ROOTFS_DIR}/etc/apt/sources.list
 deb [arch=${ARCH}] ${REPO} ${RELEASE} main restricted universe multiverse
 deb [arch=${ARCH}] ${REPO} ${RELEASE}-updates main restricted universe multiverse
 deb [arch=${ARCH}] ${REPO} ${RELEASE}-security main restricted universe multiverse
@@ -67,14 +67,14 @@ EOF
 ##########
 echo "Update repo source list"
 
-chroot ${ROOT_DIR} apt update
-chroot ${ROOT_DIR} apt upgrade -y
+chroot ${ROOTFS_DIR} apt update
+chroot ${ROOTFS_DIR} apt upgrade -y
 
 ##########
 echo "Install required packages"
 
 # below packages are needed for installing Jetson packages in step #3
-chroot ${ROOT_DIR} apt install -y --no-install-recommends \
+chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
     libasound2 \
     libcairo2 \
     libdatrie1 \
@@ -110,7 +110,7 @@ chroot ${ROOT_DIR} apt install -y --no-install-recommends \
 echo "Install systen packages"
 
 # below packages are needed for systen
-chroot ${ROOT_DIR} apt install -y --no-install-recommends \
+chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
     wget \
     curl \
     linux-firmware \
@@ -123,7 +123,7 @@ chroot ${ROOT_DIR} apt install -y --no-install-recommends \
 ##########
 echo "Install X GUI"
 
-chroot ${ROOT_DIR} apt install -y --no-install-recommends \
+chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
     xorg
 
 if [ ! -z ${JETSON_DESKTOP} ]; then
@@ -132,7 +132,7 @@ if [ ! -z ${JETSON_DESKTOP} ]; then
         echo "Install Openbox"
 
         # minimal desktop, only greeter, no taskbar and background
-        chroot ${ROOT_DIR} apt install -y --no-install-recommends \
+        chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
             lightdm-gtk-greeter \
             lightdm \
             openbox \
@@ -143,7 +143,7 @@ if [ ! -z ${JETSON_DESKTOP} ]; then
         echo "Install LXDE core"
 
         # lxde with some components
-        chroot ${ROOT_DIR} apt install -y --no-install-recommends \
+        chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
             lightdm-gtk-greeter \
             lightdm \
             lxde-icon-theme \
@@ -159,7 +159,7 @@ if [ ! -z ${JETSON_DESKTOP} ]; then
         echo "Install Xubuntu core"
 
         # Xubuntu, better than lxde
-        chroot ${ROOT_DIR} apt install -y --no-install-recommends \
+        chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
             xubuntu-core \
 
     fi
@@ -168,13 +168,13 @@ if [ ! -z ${JETSON_DESKTOP} ]; then
         echo "Install Ubuntu Mate"
 
         # Ubuntu-Mate, similar to Ubuntu
-        chroot ${ROOT_DIR} apt install -y --no-install-recommends \
+        chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
             ubuntu-mate-core \
 
     fi
 
     # below packages are needed for desktop
-    chroot ${ROOT_DIR} apt install -y --no-install-recommends \
+    chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
         onboard \
 
 fi
@@ -183,21 +183,21 @@ fi
 echo "Install extra packages"
 
 # below packages are needed for desktop
-chroot ${ROOT_DIR} apt install -y --no-install-recommends \
+chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
     htop \
     nano \
 
 ##########
 echo "Clean up"
 
-chroot ${ROOT_DIR} apt autoremove -y
-chroot ${ROOT_DIR} apt clean
+chroot ${ROOTFS_DIR} apt autoremove -y
+chroot ${ROOTFS_DIR} apt clean
 
 ##########
 echo "Set up networks"
 
 # ubuntu 18.04 us netplan, so it does not use /etc/network/interfaces anymore
-cat << EOF > ${ROOT_DIR}/etc/netplan/01-netconf.yaml
+cat << EOF > ${ROOTFS_DIR}/etc/netplan/01-netconf.yaml
 network:
     version: 2
     renderer: NetworkManager
@@ -216,7 +216,7 @@ network:
                 route-metric: 50
 EOF
 
-cat << EOF > ${ROOT_DIR}/etc/hostname
+cat << EOF > ${ROOTFS_DIR}/etc/hostname
 ${JETSON_NAME}
 EOF
 
@@ -224,5 +224,5 @@ EOF
 echo "Unmount dependency points"
 
 for mnt in tmp dev/pts dev proc sys; do
-    umount "${ROOT_DIR}/$mnt"
+    umount "${ROOTFS_DIR}/$mnt"
 done

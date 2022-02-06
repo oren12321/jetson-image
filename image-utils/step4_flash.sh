@@ -28,6 +28,6 @@ set -u                  # treat unset variable as error
 ##########
 echo "Flash image"
 
-pushd ${WORK_DIR}/Linux_for_Tegra
+pushd ${ICACHE_DIR}/Linux_for_Tegra
 
 ./flash.sh ${JETSON_BOARD} ${JETSON_STORAGE}

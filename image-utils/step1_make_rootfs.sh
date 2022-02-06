@@ -40,16 +40,16 @@ echo "Debootstrap a base"
 # create a zip file for laster use
 # delete the zip file to get new version of packages
 # however, app packages will be updated later
-if [ ! -f ${ARCH}-${RELEASE}.tgz ]
+if [ ! -f ${ICACHE_DIR}/${ARCH}-${RELEASE}.tgz ]
 then
     echo "Download packages to ${ARCH}-${RELEASE}.tgz"
     debootstrap \
         --verbose \
         --foreign \
-        --make-tarball=${ARCH}-${RELEASE}.tgz \
+        --make-tarball=${ICACHE_DIR}/${ARCH}-${RELEASE}.tgz \
         --arch=${ARCH} \
         ${RELEASE} \
-        ${ROOT_DIR} \
+        ${ROOTFS_DIR} \
         ${REPO}
 fi
 
@@ -57,22 +57,22 @@ echo "Install packages from ${ARCH}-${RELEASE}.tgz"
 debootstrap \
     --verbose \
     --foreign \
-    --unpack-tarball=$(realpath ${ARCH}-${RELEASE}.tgz) \
+    --unpack-tarball=$(realpath ${ICACHE_DIR}/${ARCH}-${RELEASE}.tgz) \
     --arch=${ARCH} \
     ${RELEASE} \
-    ${ROOT_DIR} \
+    ${ROOTFS_DIR} \
     ${REPO}
 
 ##########
 echo "Install virtual machine"
 
 # qemu-aarch64-static will be called by chroot
-install -Dm755 $(which qemu-aarch64-static) ${ROOT_DIR}/usr/bin/qemu-aarch64-static
+install -Dm755 $(which qemu-aarch64-static) ${ROOTFS_DIR}/usr/bin/qemu-aarch64-static
 
 # ubuntu-keyring package can be installed, but this way is a bit faster ?
-install -Dm644 /usr/share/keyrings/ubuntu-archive-keyring.gpg ${ROOT_DIR}/usr/share/keyrings/ubuntu-archive-keyring.gpg
+install -Dm644 /usr/share/keyrings/ubuntu-archive-keyring.gpg ${ROOTFS_DIR}/usr/share/keyrings/ubuntu-archive-keyring.gpg
 
 ##########
-echo "Unpack ${ROOT_DIR}"
+echo "Unpack ${ROOTFS_DIR}"
 
-chroot ${ROOT_DIR} /debootstrap/debootstrap --second-stage
+chroot ${ROOTFS_DIR} /debootstrap/debootstrap --second-stage

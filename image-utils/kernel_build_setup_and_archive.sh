@@ -26,38 +26,40 @@ set -u                  # treat unset variable as error
 ##########
 echo "Prepare toolchain"
 
-if [ ! -f ${LINARO_ARCHIVE} ]; then
+if [ ! -f ${KCACHE_DIR}/${LINARO_ARCHIVE} ]; then
     echo "Download LINARO_ARCHIVE"
-    wget ${LINARO_ARCHIVE_URL}
+    wget ${LINARO_ARCHIVE_URL} -P ${KCACHE_DIR}
 fi
 
-mkdir -p ${WORK_DIR}/l4t-gcc
-tar -xvf ${LINARO_ARCHIVE} -C ${WORK_DIR}/l4t-gcc --strip-components 1
+mkdir -p ${KCACHE_DIR}/l4t-gcc
+tar -xvf ${LINARO_ARCHIVE} -C ${KCACHE_DIR}/l4t-gcc --strip-components 1
 
-export CROSS_COMPILE=${WORK_DIR}/l4t-gcc/bin/aarch64-linux-gnu-
+export CROSS_COMPILE=${KCACHE_DIR}/l4t-gcc/bin/aarch64-linux-gnu-
 
 #########
 echo "Prepare kernel sources"
 
-if [ ! -f ${DRIVER_SOURCES_ARCHIVE} ]; then
+if [ ! -f ${KCACHE_DIR}/${DRIVER_SOURCES_ARCHIVE} ]; then
     echo "Download DRIVER_SOURCES_ARCHIVE"
-    wget ${DRIVER_SOURCES_ARCHIVE_URL}
+    wget ${DRIVER_SOURCES_ARCHIVE_URL} -P ${KCACHE_DIR}
 fi
 
-mkdir -p ${WORK_DIR}/kernel_src
-tar -xvf ${LINARO_ARCHIVE} -C ${WORK_DIR}/l4t-gcc --strip-components 1
+pushd ${KCACHE_DIR}
+mkdir -p kernel_src
 tar -xvjf ${DRIVER_SOURCES_ARCHIVE}
-pushd Linux_for_Tegra/source/public/
-tar -xvjf kernel_src.tbz2 -C ${WORK_DIR}/kernel_src
 popd
-rm -rf Linux_for_Tegra
+
+pushd ${KCACHE_DIR}/Linux_for_Tegra/source/public/
+tar -xvjf kernel_src.tbz2 -C ${KCACHE_DIR}/kernel_src
+popd
+rm -rf ${KCAHCE_DIR}/Linux_for_Tegra
 
 ##########
 echo "Prepare kernel build env"
 
 apt install build-essential bc -y --no-install-recommends
 
-TEGRA_KERNEL_OUT=${WORK_DIR}/kernel_out
+TEGRA_KERNEL_OUT=${KCACHE_DIR}/kernel_out
 mkdir -p ${TEGRA_KERNEL_OUT}
 
 export LOCALVERSION=-tegra
@@ -65,7 +67,7 @@ export LOCALVERSION=-tegra
 ##########
 echo "Build kernel"
 
-pushd ${WORK_DIR}/kernel_src/kernel/kernel-4.9
+pushd ${KCACHE_DIR}/kernel_src/kernel/kernel-4.9
 make ARCH=${ARCH} O=${TEGRA_KERNEL_OUT} tegra_defconfig
 make ARCH=${ARCH} O=${TEGRA_KERNEL_OUT} -j$(nproc)
 popd
@@ -74,28 +76,32 @@ popd
 ##########
 echo "Install and archive kernel supplements"
 
-if [ ! -d ${WORK_DIR}/Linux_for_Tegra ]; then
+if [ ! -d ${ICACHE_DIR}/Linux_for_Tegra ]; then
     echo "Kernel supplements will not be installed - Linux_for_Tegra directory missing"
     exit 0
 fi
 
 echo "Copying Image and .dtb files"
-pushd ${WORK_DIR}/kernel_out/arch/${ARCH}/boot
-cp -a Image ${WORK_DIR}/Linux_for_Tegra/kernel/
-rm -rf ${WORK_DIR}/Linux_for_Tegra/kernel/dtb/*
-cp -a dts/* ${WORK_DIR}/Linux_for_Tegra/kernel/dtb/
+pushd ${KCACHE_DIR}/kernel_out/arch/${ARCH}/boot
+cp -a Image ${ICACHE_DIR}/Linux_for_Tegra/kernel/
+rm -rf ${ICACHE_DIR}/Linux_for_Tegra/kernel/dtb/*
+cp -a dts/* ${ICACHE_DIR}/Linux_for_Tegra/kernel/dtb/
 popd
 
 echo "Installing kernel modules"
-pushd ${WORK_DIR}/kernel_src/kernel/kernel-4.9
-make ARCH=${ARCH} O=${TEGRA_KERNEL_OUT} modules_install INSTALL_MOD_PATH=${WORK_DIR}/Linux_for_Tegra/rootfs/
+pushd ${KCACHE_DIR}/kernel_src/kernel/kernel-4.9
+make ARCH=${ARCH} O=${TEGRA_KERNEL_OUT} modules_install INSTALL_MOD_PATH=${ICACHE_DIR}/Linux_for_Tegra/rootfs/
 popd
 
 echo "Archiving kernel modules and applying binaries"
-tar --owner root --group root -cvjf kernel_supplements_${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 ${WORK_DIR}/Linux_for_Tegra/rootfs/lib/modules
+tar --owner root --group root -cvjf ${KCACHE_DIR}/kernel_supplements_${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 ${KCACHE_DIR}/Linux_for_Tegra/rootfs/lib/modules
 
-cp -a kernel_supplements_${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 ${WORK_DIR}/Linux_for_Tegra/kernel/kernel_supplements.tbz2
-pushd ${WORK_DIR}/Linux_for_Tegra
+cp -a ${KCACHE_DIR}/kernel_supplements_${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 ${ICACHE_DIR}/Linux_for_Tegra/kernel/kernel_supplements.tbz2
+pushd ${ICACHE_DIR}/Linux_for_Tegra
 ./apply_binaries.sh
 popd
+
+echo "Repacking image"
+rm -rf ${ART_DIR}/${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2
+tar -jcvf ${ART_DIR}/${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 ${ICACHE_DIR}/Linux_for_Tegra
 

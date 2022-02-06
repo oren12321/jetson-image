@@ -34,7 +34,7 @@ if [ ! -b $1 ] || [ "$(lsblk | grep -w $(basename $1) | awk '{print $6}')" != "d
 fi
 
 ##########
-IMAGE=${WORK_DIR}/Linux_for_Tegra/tools/${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.img
+IMAGE=${ICACHE_DIR}/Linux_for_Tegra/tools/${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.img
 echo "Using ${IMAGE}"
 
 

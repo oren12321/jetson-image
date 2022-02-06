@@ -48,8 +48,12 @@ DRIVER_SOURCES_ARCHIVE_URL=https://developer.nvidia.com/embedded/l4t/r32_release
 
 echo "Set target directories"
 
-ROOT_DIR="${HOME}/jetson-custom/rootfs"
-WORK_DIR="${HOME}/jetson-custom/build"
+WORK_DIR="${HOME}/jetson-workspace"
+
+ICACHE_DIR="${WORK_DIR}/icache"
+KCACHE_DIR="${WORK_DIR}/kcache"
+ROOTFS_DIR="${ICACHE_DIR}/rootfs"
+ART_DIR="${WORK_DIR}/artifacts"
 
 echo "Set system users"
 
@@ -84,8 +88,10 @@ WIFI_PASS=jetson
 ##########
 echo "Prepare environment"
 
-mkdir -p ${ROOT_DIR}
-mkdir -p ${WORK_DIR}
+mkdir -p ${ICACHE_DIR}
+mkdir -p ${KCACHE_DIR}
+mkdir -p ${ROOTFS_DIR}
+mkdir -p ${ART_DIR}
 
 echo "ARCH = ${ARCH}"
 echo "RELEASE = ${RELEASE}"
@@ -96,7 +102,6 @@ echo "JETSON_REL = ${JETSON_REL}"
 echo "JETSON_BSP = ${JETSON_BSP}"
 echo "JETSON_BSP_URL = ${JETSON_BSP_URL}"
 
-echo "ROOT_DIR = ${ROOT_DIR}"
 echo "WORK_DIR = ${WORK_DIR}"
 
 echo "ROOT_PWD =${ROOT_PWD}"

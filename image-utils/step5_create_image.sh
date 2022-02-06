@@ -29,6 +29,6 @@ set -u                  # treat unset variable as error
 IMAGE=${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.img
 echo "Create image ${IMAGE}"
 
-pushd ${WORK_DIR}/Linux_for_Tegra/tools
+pushd ${ICACHE_DIR}/Linux_for_Tegra/tools
 
 ./jetson-disk-image-creator.sh -o ${IMAGE} -b ${JETSON_BOARD_IMG} -r ${JETSON_BOARD_REV}

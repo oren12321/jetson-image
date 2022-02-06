@@ -12,7 +12,7 @@
 
 2. Run `step1_make_rootfs.sh`
 
-    This step creates a base RootFs in `ROOT_DIR`.
+    This step creates a base RootFs in `ROOTFS_DIR`.
     The base version of Ubuntu will be downloaded and unpacked.
 
 3. Run `step2_customize_rootfs.sh`
