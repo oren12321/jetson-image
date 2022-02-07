@@ -114,5 +114,7 @@ popd
 
 linfo "repacking image"
 rm -rf ${ART_DIR}/${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2
-tar -jcvf ${ART_DIR}/${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 ${ICACHE_DIR}/Linux_for_Tegra
+pushd ${ICACHE_DIR}
+tar -jcvf ${ART_DIR}/${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 Linux_for_Tegra
+popd
 

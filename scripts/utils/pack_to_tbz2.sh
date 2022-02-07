@@ -35,5 +35,7 @@ TBZ2_FNAME=${ART_DIR}/${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${
 
 linfo "packing Jetson OS to ${TBZ2_FNAME}"
 
-tar -jcvf ${TBZ2_FNAME} ${ICACHE_DIR}/Linux_for_Tegra
+pushd ${ICACHE_DIR}
+tar -jcvf ${TBZ2_FNAME} Linux_for_Tegra
+popd
 
