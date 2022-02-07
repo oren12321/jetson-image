@@ -12,6 +12,7 @@
 #{{{ Bash settings
 set -eEuo pipefail
 trap customize_rootfs_error ERR
+trap customize_rootfs_int SIGINT
 #}}}
 
 #{{{ Globals
@@ -35,6 +36,11 @@ umount_dep_points() {
 customize_rootfs_error() {
     lerror "someting went wrong - customize rootfs failed"
     lerror "trying to umount dependency points"
+    umount_dep_points
+}
+
+customize_rootfs_int() {
+    lwarning "customize rootfs interrupted - trying to umount dependency points"
     umount_dep_points
 }
 
