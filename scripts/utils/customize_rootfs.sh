@@ -194,6 +194,29 @@ chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
     htop \
     vim \
 
+#########
+linfo "installing docker packages"
+
+chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
+    ca-certificates \
+    curl \
+    gnupg \
+    lsb-release
+
+chroot ${ROOTFS_DIR} bash -c 'curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg'
+
+chroot ${ROOTFS_DIR} bash -c 'echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" | tee /etc/apt/sources.list.d/docker.list > /dev/null'
+
+chroot ${ROOTFS_DIR} apt update
+chroot ${ROOTFS_DIR} apt install -y --no-install-recommends \
+    docker-ce docker-ce-cli containerd.io
+
+chroot ${ROOTFS_DIR} curl -L "https://github.com/docker/compose/releases/download/1.29.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+chroot ${ROOTFS_DIR} chmod +x /usr/local/bin/docker-compose
+chroot ${ROOTFS_DIR} ln -s /usr/local/bin/docker-compose /usr/bin/docker-compose
+
 ##########
 linfo "cleaning unneeded packages"
 
