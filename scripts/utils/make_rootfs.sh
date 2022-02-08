@@ -32,14 +32,6 @@ make_rootfs_error() {
 
 #}}}
 
-##########
-linfo "installing virtual environment and bootstraping tools"
-
-apt install -y --no-install-recommends \
-    qemu-user-static \
-    debootstrap \
-    binfmt-support \
-    libxml2-utils
 
 ##########
 linfo "bootstrapping base ${RELEASE} rootfs for ${ARCH}"

@@ -34,25 +34,12 @@ customize_kernel_error() {
 #}}}
 
 
-##########
-linfo "preparing cross-compilation toolchain"
-
-if [ ! -f ${KCACHE_DIR}/${LINARO_ARCHIVE} ]; then
-    linfo "downloading ${LINARO_ARCHIVE}"
-    wget ${LINARO_ARCHIVE_URL} -P ${KCACHE_DIR}
-fi
-
-mkdir -p ${KCACHE_DIR}/l4t-gcc
-tar -xvf ${KCACHE_DIR}/${LINARO_ARCHIVE} -C ${KCACHE_DIR}/l4t-gcc --strip-components 1
-
-export CROSS_COMPILE=${KCACHE_DIR}/l4t-gcc/bin/aarch64-linux-gnu-
-
 #########
 linfo "preparing kernel sources"
 
 if [ ! -f ${KCACHE_DIR}/${DRIVER_SOURCES_ARCHIVE} ]; then
     linfo "downloading ${DRIVER_SOURCES_ARCHIVE}"
-    wget ${DRIVER_SOURCES_ARCHIVE_URL} -P ${KCACHE_DIR}
+    wget --no-check-certificate ${DRIVER_SOURCES_ARCHIVE_URL} -P ${KCACHE_DIR}
 fi
 
 pushd ${KCACHE_DIR}
@@ -68,8 +55,6 @@ rm -rf ${KCACHE_DIR}/Linux_for_Tegra
 ##########
 linfo "preparing kernel build env"
 
-apt install build-essential bc -y --no-install-recommends
-
 TEGRA_KERNEL_OUT=${KCACHE_DIR}/kernel_out
 mkdir -p ${TEGRA_KERNEL_OUT}
 
@@ -82,7 +67,6 @@ pushd ${KCACHE_DIR}/kernel_src/kernel/kernel-4.9
 make ARCH=${ARCH} O=${TEGRA_KERNEL_OUT} tegra_defconfig
 make ARCH=${ARCH} O=${TEGRA_KERNEL_OUT} -j$(nproc)
 popd
-
 
 ##########
 linfo "installing and archive kernel supplements"

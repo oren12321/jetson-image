@@ -27,8 +27,6 @@ main() {
     # check_args "${@}"
     :
     validate_root
-    validate_ini
-    export_ini
     [ "${REPO}" = "" ] && { REPO=$(find_fastest_mirror); linfo "REPO not set - found fastest mirror ${REPO}"; }
     export REPO
     create_workspace
@@ -43,36 +41,12 @@ validate_root() {
     fi
 }
 
-validate_ini() {
-    if [ ! -f ${script_dir}/../env.ini ]; then
-        lerror "env.ini not found"
-        exit 1
-    fi
-}
-
-export_ini() {
-    source <(grep -E ".+=" ${script_dir}/../env.ini | sed 's/^/export /')
-}
-
 find_fastest_mirror() {
     printf $(${script_dir}/./find_mirrors.sh ${ARCH} ${RELEASE} main speed | sort -k 1 | head -n 1 | awk '{print $2}')
 }
 
 create_workspace() {
-    ICACHE_DIR=${WORK_DIR}/icache
-    KCACHE_DIR=${WORK_DIR}/kcache
-    ROOTFS_DIR=${ICACHE_DIR}/rootfs
-    ART_DIR=${WORK_DIR}/artifacts
-
-    mkdir -p ${ICACHE_DIR}
-    mkdir -p ${KCACHE_DIR}
-    mkdir -p ${ROOTFS_DIR}
-    mkdir -p ${ART_DIR}
-
-    export ICACHE_DIR
-    export KCACHE_DIR
-    export ROOTFS_DIR
-    export ART_DIR
+    mkdir -p ${WORK_DIR} ${ROOTFS_DIR} ${ICACHE_DIR} ${KCACHE_DIR} ${ART_DIR}
 }
 
 #}}}

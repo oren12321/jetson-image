@@ -36,7 +36,7 @@ apply_bps_error() {
 
 if [ ! -f ${ICACHE_DIR}/${JETSON_BSP} ]; then 
     linfo "downloading ${JETSON_BSP}"
-    wget ${JETSON_BSP_URL} -P ${ICACHE_DIR}
+    wget --no-check-certificate ${JETSON_BSP_URL} -P ${ICACHE_DIR}
 fi
 
 ##########
