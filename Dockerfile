@@ -27,7 +27,7 @@ ARG LINARO_ARCHIVE_URL=http://releases.linaro.org/components/toolchain/binaries/
 RUN wget ${LINARO_ARCHIVE_URL} \
  && mkdir /opt/l4t-gcc \
  && tar -xvf ${LINARO_ARCHIVE} -C /opt/l4t-gcc --strip-components 1 \
- && rm -rf /tmp/* \
+ && rm -rf /tmp/*
 ENV CROSS_COMPILE=/opt/l4t-gcc/bin/aarch64-linux-gnu-
 
 # work tree setup
