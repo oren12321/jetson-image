@@ -23,4 +23,4 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Build the Docker image
-        run: docker buildx build . --file sample-docker/Dockerfile --tag sample-docker:$(date +%s) --platform
+        run: docker buildx build . --file sample-docker/Dockerfile --tag sample-docker:$(date +%s) --platform arm64
