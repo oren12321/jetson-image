@@ -20,3 +20,5 @@ RUN apt update \
         nvidia-l4t-jetson-multimedia-api \
  && rm -rf /var/lib/apt/lists/*
 
+ENTRYPOINT ["/bin/bash"]
+
