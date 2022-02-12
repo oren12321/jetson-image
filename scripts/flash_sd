@@ -3,7 +3,7 @@
 # Author: oren12321 <oren12321@gmail.com>
 # Based on: vuquangtrong/jetson-custom-image
 #
-# Description: create Jetson .img file and flash SD card.
+# Description: flash SD card with .img file.
 #
 #/ Usage: ./flash_sd.sh <block_device>
 #/
@@ -42,20 +42,6 @@ if [ ! -b $1 ] || [ "$(lsblk | grep -w $(basename $1) | awk '{print $6}')" != "d
 fi
 
 ##########
-IMAGE=${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.img
-linfo "creating image ${IMAGE}"
-
-pushd ${ICACHE_DIR}/Linux_for_Tegra/tools
-
-if [ "${JETSON_BOARD_REV}" = ""  ]; then
-    ./jetson-disk-image-creator.sh -o ${ICACHE_DIR}/${IMAGE} -b ${JETSON_IMG_BOARD}
-else
-    ./jetson-disk-image-creator.sh -o ${ICACHE_DIR}/${IMAGE} -b ${JETSON_IMG_BOARD} -r ${JETSON_BOARD_REV}
-fi
-
-popd
-
-##########
 linfo "umount $1 if required"
 
 if [ "$(mount | grep $1)" ]; then
@@ -65,7 +51,12 @@ if [ "$(mount | grep $1)" ]; then
 fi
 
 ##########
-linfo "flashing $1"
+linfo "flashing $1 with ${IMAGE}"
+IMAGE=${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.img
+if [ ! -f ${ICACHE_DIR}/${IMAGE} ]; then
+    lerror "no .img file found"
+    exit 1
+fi
 dd if=${ICACHE_DIR}/${IMAGE} of=$1 bs=4M conv=fsync status=progress
 
 ##########
