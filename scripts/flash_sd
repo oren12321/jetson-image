@@ -48,9 +48,9 @@ linfo "creating image ${IMAGE}"
 pushd ${ICACHE_DIR}/Linux_for_Tegra/tools
 
 if [ "${JETSON_BOARD_REV}" = ""  ]; then
-    ./jetson-disk-image-creator.sh -o ${ICACHE_DIR}/${IMAGE} -b ${JETSON_BOARD}
+    ./jetson-disk-image-creator.sh -o ${ICACHE_DIR}/${IMAGE} -b ${JETSON_IMG_BOARD}
 else
-    ./jetson-disk-image-creator.sh -o ${ICACHE_DIR}/${IMAGE} -b ${JETSON_BOARD} -r ${JETSON_BOARD_REV}
+    ./jetson-disk-image-creator.sh -o ${ICACHE_DIR}/${IMAGE} -b ${JETSON_IMG_BOARD} -r ${JETSON_BOARD_REV}
 fi
 
 popd
