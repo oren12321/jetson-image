@@ -66,6 +66,12 @@ for file in "${remove_files[@]}"; do
     fi
 done
 
+#########
+linfo "installing extlinux.conf from bootloader to rootfs"
+pushd ${ICACHE_DIR}/Linux_for_Tegra
+install -Dm644 bootloader/extlinux.conf rootfs/boot/extlinux/extlinux.conf
+popd
+
 ##########
 linfo "setup permission"
 
