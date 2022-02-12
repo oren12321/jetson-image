@@ -33,7 +33,17 @@ RUN wget ${LINARO_ARCHIVE_URL} \
  && rm -rf /tmp/*
 ENV CROSS_COMPILE=/opt/l4t-gcc/bin/aarch64-linux-gnu-
 
+# target flashing
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+        python3 \
+        cpio \
+        ssh-import-id \
+ && rm -rf /var/lib/apt/lists/*
+
 # work tree setup
+
+ENV USER=root
 
 ARG WORK_DIR=/workdir
 ENV WORK_DIR=${WORK_DIR}
