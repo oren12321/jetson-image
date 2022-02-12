@@ -50,7 +50,7 @@ fi
 linfo "copying rootfs"
 
 rm -rf ${ICACHE_DIR}/Linux_for_Tegra/rootfs
-cp -rf ${ROOTFS_DIR} ${ICACHE_DIR}/Linux_for_Tegra/
+cp -rf ${ROOTFS_CACHE_DIR} ${ICACHE_DIR}/Linux_for_Tegra/
 
 # below device files conflict with L4T package install
 declare -a remove_files=(

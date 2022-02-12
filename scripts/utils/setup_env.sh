@@ -46,7 +46,7 @@ find_fastest_mirror() {
 }
 
 create_workspace() {
-    mkdir -p ${WORK_DIR} ${ROOTFS_DIR} ${ICACHE_DIR} ${KCACHE_DIR} ${ART_DIR}
+    mkdir -p ${WORK_DIR} ${ROOTFS_CACHE_DIR} ${ICACHE_DIR} ${KCACHE_DIR} ${ART_DIR}
 }
 
 #}}}

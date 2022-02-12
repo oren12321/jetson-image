@@ -47,7 +47,7 @@ ENV USER=root
 
 ARG WORK_DIR=/workdir
 ENV WORK_DIR=${WORK_DIR}
-ENV ROOTFS_DIR=${WORK_DIR}/rootfs
+ENV ROOTFS_CACHE_DIR=${WORK_DIR}/rootfs
 ENV ICACHE_DIR=${WORK_DIR}/cache/image
 ENV KCACHE_DIR=${WORK_DIR}/cache/kernel
 ENV ART_DIR=${WORK_DIR}/artifacts

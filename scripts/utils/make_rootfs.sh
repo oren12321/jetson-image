@@ -36,10 +36,10 @@ make_rootfs_error() {
 ##########
 linfo "bootstrapping base ${RELEASE} rootfs for ${ARCH}"
 
-# Remove ROOTFS_DIR content from previous runs
-if [ "$(ls -A ${ROOTFS_DIR})" ]; then
-    lwarning "removing previous content from ${ROOTFS_DIR}"
-    rm -rf ${ROOTFS_DIR}/*
+# Remove ROOTFS_CACHE_DIR content from previous runs
+if [ "$(ls -A ${ROOTFS_CACHE_DIR})" ]; then
+    lwarning "removing previous content from ${ROOTFS_CACHE_DIR}"
+    rm -rf ${ROOTFS_CACHE_DIR}/*
 fi
 
 # create a zip file for laster use
@@ -54,7 +54,7 @@ then
         --make-tarball=${ICACHE_DIR}/${ARCH}-${RELEASE}.tgz \
         --arch=${ARCH} \
         ${RELEASE} \
-        ${ROOTFS_DIR} \
+        ${ROOTFS_CACHE_DIR} \
         ${REPO}
 fi
 
@@ -65,20 +65,20 @@ debootstrap \
     --unpack-tarball=$(realpath ${ICACHE_DIR}/${ARCH}-${RELEASE}.tgz) \
     --arch=${ARCH} \
     ${RELEASE} \
-    ${ROOTFS_DIR} \
+    ${ROOTFS_CACHE_DIR} \
     ${REPO}
 
 ##########
 linfo "installing qemu virtual machine to rootfs"
 
 # qemu-aarch64-static will be called by chroot
-install -Dm755 $(which qemu-aarch64-static) ${ROOTFS_DIR}/usr/bin/qemu-aarch64-static
+install -Dm755 $(which qemu-aarch64-static) ${ROOTFS_CACHE_DIR}/usr/bin/qemu-aarch64-static
 
 # ubuntu-keyring package can be installed, but this way is a bit faster ?
-install -Dm644 /usr/share/keyrings/ubuntu-archive-keyring.gpg ${ROOTFS_DIR}/usr/share/keyrings/ubuntu-archive-keyring.gpg
+install -Dm644 /usr/share/keyrings/ubuntu-archive-keyring.gpg ${ROOTFS_CACHE_DIR}/usr/share/keyrings/ubuntu-archive-keyring.gpg
 
 ##########
 linfo "running bootsrapping second stage"
 
-chroot ${ROOTFS_DIR} /debootstrap/debootstrap --second-stage
+chroot ${ROOTFS_CACHE_DIR} /debootstrap/debootstrap --second-stage
 
