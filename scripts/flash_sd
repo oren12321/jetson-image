@@ -53,11 +53,11 @@ fi
 ##########
 linfo "flashing $1 with ${IMAGE}"
 IMAGE=${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.img
-if [ ! -f ${ICACHE_DIR}/${IMAGE} ]; then
+if [ ! -f ${ART_DIR}/${IMAGE} ]; then
     lerror "no .img file found"
     exit 1
 fi
-dd if=${ICACHE_DIR}/${IMAGE} of=$1 bs=4M conv=fsync status=progress
+dd if=${ART_DIR}/${IMAGE} of=$1 bs=4M conv=fsync status=progress
 
 ##########
 linfo "extending the partition"

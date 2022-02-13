@@ -35,10 +35,13 @@ ENV CROSS_COMPILE=/opt/l4t-gcc/bin/aarch64-linux-gnu-
 
 # target flashing
 
-RUN apt-get update && apt-get install -y --no-install-recommends \
+RUN apt-get update && apt-get install -y --no-install-recommends --allow-downgrades \
+        python \
         python3 \
         cpio \
         ssh-import-id \
+        binutils \
+        sudo \
  && rm -rf /var/lib/apt/lists/*
 
 # work tree setup

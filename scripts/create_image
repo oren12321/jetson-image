@@ -33,6 +33,11 @@ flash_sd_error() {
 
 #}}}
 
+#########
+REQUIRED_UDEV_SIZE="$(free -g | sed -n '2 p' | awk '{print $2}')G"
+linfo "remonting udev to ${REQUIRED_UDEV_SIZE}"
+
+mount -o remount,size=${REQUIRED_UDEV_SIZE} /dev
 
 ##########
 IMAGE=${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.img
@@ -41,9 +46,9 @@ linfo "creating image ${IMAGE}"
 pushd ${ICACHE_DIR}/Linux_for_Tegra/tools
 
 if [ "${JETSON_BOARD_REV}" = ""  ]; then
-    ./jetson-disk-image-creator.sh -o ${ICACHE_DIR}/${IMAGE} -b ${JETSON_IMG_BOARD}
+    ./jetson-disk-image-creator.sh -o ${ART_DIR}/${IMAGE} -b ${JETSON_IMG_BOARD}
 else
-    ./jetson-disk-image-creator.sh -o ${ICACHE_DIR}/${IMAGE} -b ${JETSON_IMG_BOARD} -r ${JETSON_BOARD_REV}
+    ./jetson-disk-image-creator.sh -o ${ART_DIR}/${IMAGE} -b ${JETSON_IMG_BOARD} -r ${JETSON_BOARD_REV}
 fi
 
 popd
