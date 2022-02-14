@@ -66,6 +66,7 @@ chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt install -y --no-install-recommen
 linfo "removing unrequired installations"
 
 chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt autoremove -y
+chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt autoclean
 chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt clean
 
 ##########
@@ -73,4 +74,16 @@ linfo "uninstalling qemu user from rootfs and umouting dependency points"
 
 rm -rf ${ICACHE_DIR}/Linux_for_Tegra/rootfs/usr/bin/qemu-aarch64-static
 umount_dep_points
+
+##########
+linfo "removing temp rootfs files"
+
+pushd ${ICACHE_DIR}/Linux_for_Tegra/rootfs
+rm -rf var/lib/apt/lists/*
+rm -rf dev/*
+rm -rf var/log/*
+rm -rf var/tmp/*
+rm -rf var/cache/apt/archives/*.deb
+rm -rf tmp/*
+popd
 
