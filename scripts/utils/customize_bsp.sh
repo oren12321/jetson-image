@@ -62,3 +62,15 @@ linfo "installing nvidia container runtime"
 chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt update
 chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt install -y --no-install-recommends nvidia-container-runtime
 
+##########
+linfo "removing unrequired installations"
+
+chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt autoremove -y
+chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt clean
+
+##########
+linfo "uninstalling qemu user from rootfs and umouting dependency points"
+
+rm -rf ${ICACHE_DIR}/Linux_for_Tegra/rootfs/usr/bin/qemu-aarch64-static
+umount_dep_points
+
