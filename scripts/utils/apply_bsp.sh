@@ -5,13 +5,13 @@
 #
 # Description: apply JETSON BPS packages and create base OS.
 #
-#/ Usage: ./apply_bps.sh
+#/ Usage: ./apply_bsp.sh
 #/
 
 
 #{{{ Bash settings
 set -eEuo pipefail
-trap apply_bps_error ERR
+trap apply_bsp_error ERR
 #}}}
 
 #{{{ Globals
@@ -26,8 +26,8 @@ source ${script_dir}/log.sh
 
 #{{{ Helper functions
 
-apply_bps_error() {
-    lerror "someting went wrong - apply_bps failed"
+apply_bsp_error() {
+    lerror "someting went wrong - apply BSP failed"
 }
 
 #}}}

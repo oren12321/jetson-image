@@ -16,6 +16,7 @@ source ./setup_env.sh && \
 ./make_rootfs.sh && \
 ./customize_rootfs.sh && \
 ./apply_bsp.sh && \
+./customize_bsp.sh && \
 ./pack_to_tbz2.sh
 popd
 
