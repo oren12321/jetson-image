@@ -27,34 +27,18 @@ jobs:
           push: false
           tags: user/image-tools:latest
 
-  test:
-
-    needs: build
-    runs-on: ubuntu-18.04
-
-    steps:
-      - 
-        name: Checkout code
-        uses: actions/checkout@v2
-
       -
-        name: Create image
+        name: Test create image tarball
         run: |
           docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir user/image-tools:latest ./create_image_tarball
       -
-        name: Rebuild kernel
+        name: Test customize kernel
         run: |
           docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir user/image-tools:latest ./customize_kernel
 
-  clean:
-
-    if: always()
-    needs: test
-    runs-on: ubuntu-18.04
-
-    steps:
       -
-        name: Remove workdir
+        name: Clean workdir
+        if: always()
         run: |
           rm -rf ~/workdir
 
