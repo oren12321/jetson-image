@@ -1,4 +1,4 @@
-name: Docker Image CI
+name: Sample Docker CI
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
     branches: [ main ]
 
 jobs:
-  sample-docker-build:
+  build:
 
     runs-on: ubuntu-18.04
 
