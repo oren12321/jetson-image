@@ -15,6 +15,10 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
       - 
         name: Checkout code
         uses: actions/checkout@v2
@@ -40,5 +44,5 @@ jobs:
         name: Clean workdir
         if: always()
         run: |
-          rm -rf ~/workdir
+          sudo rm -rf ~/workdir
 
