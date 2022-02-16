@@ -33,11 +33,14 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
+      - 
+        name: Checkout code
+        uses: actions/checkout@v2
+
       -
         name: Create image
         run: |
           docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir user/image-tools:latest ./create_image_tarball
-
       -
         name: Rebuild kernel
         run: |
