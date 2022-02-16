@@ -37,6 +37,7 @@ jobs:
           docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir user/image-tools:latest ./create_image_tarball
       -
         name: Test customize kernel
+        if: success()
         run: |
           docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir user/image-tools:latest ./customize_kernel
 
