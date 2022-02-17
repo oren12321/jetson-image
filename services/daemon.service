@@ -1,0 +1,13 @@
+[Unit]
+Description=Sample daemon
+After=network.target docker.service
+
+[Service]
+Type=simple
+ExecStart=/home/jetson/services/daemon.sh
+Restart=always
+RestartSec=5s
+
+[Install]
+WantedBy=multi-user.target
+

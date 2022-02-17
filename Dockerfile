@@ -57,6 +57,7 @@ ENV ART_DIR=${WORK_DIR}/artifacts
 
 WORKDIR /jetson-scripts
 COPY scripts /jetson-scripts
+COPY services /jetson-services
 
 CMD ["find", ".", "-maxdepth", "1", "-type", "f"]
 

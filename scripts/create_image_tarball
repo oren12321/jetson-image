@@ -17,6 +17,7 @@ source ./setup_env.sh && \
 ./customize_rootfs.sh && \
 ./apply_bsp.sh && \
 ./customize_bsp.sh && \
+/jetson-services/install_daemon.sh && \
 ./pack_to_tbz2.sh
 popd
 
