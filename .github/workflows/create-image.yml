@@ -8,6 +8,13 @@ on:
       - 'env.list'
       - 'Dockerfile'
     branches: [ image_build ]
+  pull_request:
+    paths:
+      - '.github/workflows/create-image.yml'
+      - 'scripts/**'
+      - 'env.list'
+      - 'Dockerfile'
+    branches: [ image_build ]
 
 jobs:
   build:
@@ -15,34 +22,28 @@ jobs:
     runs-on: ubuntu-18.04
 
     steps:
-      -
-        name: Set up QEMU
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
 
-      - 
-        name: Checkout code
+      - name: Checkout code
         uses: actions/checkout@v2
 
-      - 
-        name: Build and (not) push
+      - name: Build and (not) push
         uses: docker/build-push-action@v2
         with:
           context: .
           push: false
           tags: user/image-tools:latest
 
-      -
-        name: Test create image tarball
+      - name: Test create image tarball
         run: |
           docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir user/image-tools:latest ./create_image_tarball
-      -
-        name: Test customize kernel
+      - name: Test customize kernel
         if: success()
         run: |
           docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir user/image-tools:latest ./customize_kernel
 
-      -
-        name: Clean workdir
+      - name: Clean workdir
         if: always()
         run: |
           sudo rm -rf ~/workdir
