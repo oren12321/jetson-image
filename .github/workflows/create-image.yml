@@ -24,11 +24,13 @@ jobs:
     steps:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
 
       - name: Checkout code
         uses: actions/checkout@v2
 
-      - name: Prepare tag
+      - name: Prepare
         id: prep
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
@@ -36,7 +38,7 @@ jobs:
           echo ::set-output name=latest_image::${IMAGE}:latest
           echo ::set-output name=tagged_image::${IMAGE}:${TAG}
 
-      - name: Build and (not) push
+      - name: Build
         uses: docker/build-push-action@v2
         with:
           context: .
@@ -44,6 +46,8 @@ jobs:
           tags: |
             ${{ steps.prep.outputs.tagged_image }}
             ${{ steps.prep.outputs.latest_image }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
       - name: Test create image tarball
         run: |
@@ -53,7 +57,7 @@ jobs:
         run: |
           docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir ${{ steps.prep.outputs.tagged_image }} ./customize_kernel
 
-      - name: Clean workdir
+      - name: Clean
         if: always()
         run: |
           sudo rm -rf ~/workdir
