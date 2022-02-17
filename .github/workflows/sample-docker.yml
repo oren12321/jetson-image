@@ -25,12 +25,22 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Prepare tag
+        id: prep
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          IMAGE=oren12321/sample-docker
+          echo ::set-output name=latest_image::${IMAGE}:latest
+          echo ::set-output name=tagged_image::${IMAGE}:${TAG}
+          
       - name: Build and (not) push
         uses: docker/build-push-action@v2
         with:
           context: sample-docker
           file: sample-docker/Dockerfile
           push: false
-          tags: user/sample-docker:latest
           platforms: linux/arm64
+          tags: |
+            ${{ steps.prep.outputs.tagged_image }}
+            ${{ steps.prep.outputs.latest_image }}
 

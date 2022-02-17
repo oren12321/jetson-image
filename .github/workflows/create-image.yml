@@ -28,20 +28,30 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Prepare tag
+        id: prep
+        run: |
+          TAG=$(echo $GITHUB_SHA | head -c7)
+          IMAGE=oren12321/image-tools
+          echo ::set-output name=latest_image::${IMAGE}:latest
+          echo ::set-output name=tagged_image::${IMAGE}:${TAG}
+
       - name: Build and (not) push
         uses: docker/build-push-action@v2
         with:
           context: .
           push: false
-          tags: user/image-tools:latest
+          tags: |
+            ${{ steps.prep.outputs.tagged_image }}
+            ${{ steps.prep.outputs.latest_image }}
 
       - name: Test create image tarball
         run: |
-          docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir user/image-tools:latest ./create_image_tarball
+          docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir ${{ steps.prep.outputs.tagged_image }} ./create_image_tarball
       - name: Test customize kernel
         if: success()
         run: |
-          docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir user/image-tools:latest ./customize_kernel
+          docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir ${{ steps.prep.outputs.tagged_image }} ./customize_kernel
 
       - name: Clean workdir
         if: always()
