@@ -1,15 +1,15 @@
-name: Sample Docker CI
+name: Sample App CI
 
 on:
   push:
     paths:
-      - '.github/workflows/sample-docker.yml'
-      - 'sample-docker/**'
+      - '.github/workflows/sample-app.yml'
+      - 'sample-app/**'
     branches: [ main ]
   pull_request:
     paths:
-      - '.github/workflows/sample-docker.yml'
-      - 'sample-docker/**'
+      - '.github/workflows/sample-app.yml'
+      - 'sample-app/**'
     branches: [ main ]
 
 jobs:
@@ -29,15 +29,15 @@ jobs:
         id: prep
         run: |
           TAG=$(echo $GITHUB_SHA | head -c7)
-          IMAGE=oren12321/sample-docker
+          IMAGE=oren12321/sample-app
           echo ::set-output name=latest_image::${IMAGE}:latest
           echo ::set-output name=tagged_image::${IMAGE}:${TAG}
           
       - name: Build
         uses: docker/build-push-action@v2
         with:
-          context: sample-docker
-          file: sample-docker/Dockerfile
+          context: sample-app
+          file: sample-app/Dockerfile
           push: false
           platforms: linux/arm64
           tags: |

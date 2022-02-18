@@ -1,19 +1,17 @@
-name: Create Image CI
+name: Base Image CI
 
 on:
   push:
     paths:
-      - '.github/workflows/create-image.yml'
-      - 'scripts/**'
-      - 'env.list'
-      - 'Dockerfile'
+      - '.github/workflows/base-image.yml'
+      - 'tools/**'
+      - 'systemd-services/**'
     branches: [ image_build ]
   pull_request:
     paths:
-      - '.github/workflows/create-image.yml'
-      - 'scripts/**'
-      - 'env.list'
-      - 'Dockerfile'
+      - '.github/workflows/base-image.yml'
+      - 'tools/**'
+      - 'systemd-services/**'
     branches: [ image_build ]
 
 jobs:
@@ -41,7 +39,8 @@ jobs:
       - name: Build
         uses: docker/build-push-action@v2
         with:
-          context: .
+          context: tools
+          file: tools/Dockerfile
           push: false
           tags: |
             ${{ steps.prep.outputs.tagged_image }}
@@ -49,13 +48,9 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Test create image tarball
+      - name: Test
         run: |
-          docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir ${{ steps.prep.outputs.tagged_image }} ./create_image_tarball
-      - name: Test customize kernel
-        if: success()
-        run: |
-          docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir ${{ steps.prep.outputs.tagged_image }} ./customize_kernel
+          docker run --rm --privileged --env-file env.list --volume ~/workdir:/workdir ${{ steps.prep.outputs.tagged_image }} ./create_custom_base_image_tarball.sh
 
       - name: Clean
         if: always()
