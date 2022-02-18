@@ -9,4 +9,4 @@ docker build -t jetson-tools .
 docker run --rm --privileged --env-file env.list --volume <host_dir>:/workdir jetson-tools <required_tool> <args>
 ```
 To view available tools, run the docker without specifying a tool.
-
+Recommended: use main tool `create_custom_base_image_tarball.sh`.

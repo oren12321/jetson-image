@@ -1,11 +1,10 @@
 #! /usr/bin/env bash
 #
 # Author: oren12321 <oren12321@gmail.com>
-# Based on: vuquangtrong/jetson-custom-image
 #
-# Description: apply customizations for JETSON_BSP.
+# Description: install systemd services.
 #
-#/ Usage: ./customize_bsp.sh
+#/ Usage: ./install_systemd_services.sh
 #/
 
 
@@ -22,7 +21,7 @@ IFS=$'\t\n'   # Split on newlines and tabs (but not on spaces)
 #}}}
 
 #{{{ Imports
-source ${script_dir}/../jetson-scripts/utils/log.sh
+source ${script_dir}/../../aux/log.sh
 #}}}
 
 #{{{ Helper functions
@@ -61,8 +60,8 @@ linfo "installing daemon service"
 
 pushd ${ICACHE_DIR}/Linux_for_Tegra/rootfs
 mkdir home/jetson/services
-cp /jetson-services/daemon.sh home/jetson/services/
-cp /jetson-services/daemon.service etc/systemd/system/
+cp ../../../systemd-services/daemon.sh home/jetson/services/
+cp ../../../systemd-services/daemon.service etc/systemd/system/
 chroot . systemctl enable daemon
 popd
 
