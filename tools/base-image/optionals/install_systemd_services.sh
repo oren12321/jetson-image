@@ -60,8 +60,8 @@ linfo "installing daemon service"
 
 pushd ${ICACHE_DIR}/Linux_for_Tegra/rootfs
 mkdir home/jetson/services
-cp ../../../systemd-services/daemon.sh home/jetson/services/
-cp ../../../systemd-services/daemon.service etc/systemd/system/
+cp ../../systemd-services/daemon.sh home/jetson/services/
+cp ../../systemd-services/daemon.service etc/systemd/system/
 chroot . systemctl enable daemon
 popd
 

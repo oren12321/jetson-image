@@ -55,9 +55,8 @@ ENV ICACHE_DIR=${WORK_DIR}/cache/image
 ENV KCACHE_DIR=${WORK_DIR}/cache/kernel
 ENV ART_DIR=${WORK_DIR}/artifacts
 
-WORKDIR /jetson-scripts
-COPY scripts /jetson-scripts
-COPY services /jetson-services
+WORKDIR /tools
+COPY . /tools/
 
-CMD ["find", ".", "-maxdepth", "1", "-type", "f"]
+CMD ["find", ".", "base-image/others", "-maxdepth", "1", "-type", "f", "-name", "*.sh"]
 
