@@ -43,4 +43,5 @@ jobs:
           tags: ${{ steps.prep.outputs.tagged_image }},${{ steps.prep.outputs.latest_image }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          load: true
 
