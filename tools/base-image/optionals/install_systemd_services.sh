@@ -59,11 +59,21 @@ done
 linfo "installing daemon service"
 
 pushd ${ICACHE_DIR}/Linux_for_Tegra/rootfs
-mkdir home/jetson/services
-cp ${script_dir}/../../systemd-services/daemon.sh home/jetson/services/
-cp ${script_dir}/../../systemd-services/daemon.service etc/systemd/system/
-chroot . systemctl enable daemon
-popd
+
+services_dir="${script_dir}/../../systemd-services"
+
+mkdir -p home/${JETSON_USR}/services
+daemon_files=$(ls ${services_dir}/*.sh)
+for f in $daemon_files; do
+    cp ${f} home/${JETSON_USR}/services/
+done
+
+service_files=$(ls ${services_dir}/*.service)
+for f in $service_files; do
+    cp ${f} etc/systemd/system/
+    service_name=$(basename ${f} .service)
+    chroot . systemctl enable ${service_name}
+done
 
 ##########
 linfo "uninstalling qemu user from rootfs and umouting dependency points"
