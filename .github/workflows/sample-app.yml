@@ -40,9 +40,7 @@ jobs:
           file: sample-app/Dockerfile
           push: false
           platforms: linux/arm64
-          tags: |
-            ${{ steps.prep.outputs.tagged_image }}
-            ${{ steps.prep.outputs.latest_image }}
+          tags: ${{ steps.prep.outputs.tagged_image }},${{ steps.prep.outputs.latest_image }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 

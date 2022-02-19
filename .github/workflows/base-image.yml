@@ -5,13 +5,11 @@ on:
     paths:
       - '.github/workflows/base-image.yml'
       - 'tools/**'
-      - 'systemd-services/**'
     branches: [ image_build ]
   pull_request:
     paths:
       - '.github/workflows/base-image.yml'
       - 'tools/**'
-      - 'systemd-services/**'
     branches: [ image_build ]
 
 jobs:
@@ -42,9 +40,7 @@ jobs:
           context: tools
           file: tools/Dockerfile
           push: false
-          tags: |
-            ${{ steps.prep.outputs.tagged_image }}
-            ${{ steps.prep.outputs.latest_image }}
+          tags: ${{ steps.prep.outputs.tagged_image }},${{ steps.prep.outputs.latest_image }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
