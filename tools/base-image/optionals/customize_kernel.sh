@@ -96,9 +96,3 @@ pushd ${ICACHE_DIR}/Linux_for_Tegra
 ./apply_binaries.sh
 popd
 
-linfo "repacking image"
-rm -rf ${ART_DIR}/${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2
-pushd ${ICACHE_DIR}
-tar -jcvf ${ART_DIR}/${JETSON_BOARD}_${RELEASE}_${JETSON_PLAT}_${JETSON_REL}_${JETSON_DESKTOP}.tbz2 Linux_for_Tegra
-popd
-
