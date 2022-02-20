@@ -140,6 +140,8 @@ chroot ${ROOTFS_CACHE_DIR} apt install -y --no-install-recommends \
     net-tools \
     wireless-tools \
     ssh \
+    ssh-import-id \
+    parted \
 
 ##########
 linfo "installing packages for desktop (required: ${JETSON_DESKTOP})"
