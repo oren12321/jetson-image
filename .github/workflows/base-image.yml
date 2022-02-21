@@ -48,6 +48,10 @@ jobs:
       - name: Test
         run: |
           docker run --rm --privileged --env-file tools/env.list --volume ~/workdir:/workdir ${{ steps.prep.outputs.tagged_image }} ./create_custom_base_image_tarball.sh
+          docker run --rm --privileged --env-file tools/env.list --volume ~/workdir:/workdir ${{ steps.prep.outputs.tagged_image }} ./base-image/others/flash_target.sh --no-flash
+          IMG_PATH=~/workdir/cache/image/Linux_for_Tegra/bootloader/system.img
+          test -f ${IMG_PATH}
+          test -f ${IMG_PATH}.raw
 
       - name: Clean
         if: always()

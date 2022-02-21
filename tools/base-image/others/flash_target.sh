@@ -5,7 +5,7 @@
 #
 # Description: flash Jetson image to target.
 #
-#/ Usage: ./flash_target.sh
+#/ Usage: ./flash_target.sh [options from Nvidia flash.sh script]
 #/
 
 
@@ -39,7 +39,7 @@ linfo "flashing target"
 
 pushd ${ICACHE_DIR}/Linux_for_Tegra
 
-./flash.sh ${JETSON_BOARD} ${JETSON_STORAGE}
+./flash.sh "$@" ${JETSON_BOARD} ${JETSON_STORAGE}
 
 popd
 
