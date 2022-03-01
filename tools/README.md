@@ -10,3 +10,7 @@ docker run --rm --privileged --env-file env.list --volume <host_dir>:/workdir je
 ```
 To view available tools, run the docker without specifying a tool.
 Recommended: use main tool `create_custom_base_image_tarball.sh`.
+
+## Comments
+The packed .tbz2 file of the tegra OS should be extracted using `tar -xpf <.tbz2 file>` in order to meintain filesystem permissions.
+
