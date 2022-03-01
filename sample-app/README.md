@@ -7,7 +7,7 @@ sudo apt-get install qemu binfmt-support qemu-user-static
 ```
 Execute registration scripts:
 ```
-docker run --rm --privileged multiarch/qemu-user-static --reset -p yes
+docker run --rm --privileged multiarch/qemu-user-static --reset -p yes --credential yes
 ```
 Build and run the container:
 ```
