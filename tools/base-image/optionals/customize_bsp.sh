@@ -60,7 +60,7 @@ done
 linfo "installing nvidia container runtime"
 
 chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt update
-chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt install -y --no-install-recommends nvidia-container-runtime
+chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs apt install -y --no-install-recommends nvidia-container-runtime nvidia-docker2
 
 ##########
 linfo "removing unrequired installations"
