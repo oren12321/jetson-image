@@ -105,6 +105,13 @@ ${JETSON_USR} ALL=(ALL) NOPASSWD: ALL
 EOF
 
 #########
+linfo "configuring user ${JETSON_USR} for docker"
+
+# if failed should not be considered as an error, in some OSs it is automatically configured.
+chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs bash -c "groupadd docker || true"
+chroot ${ICACHE_DIR}/Linux_for_Tegra/rootfs bash -c "usermod -aG docker ${JETSON_USR} || true"
+
+#########
 linfo "setting Nvidia repo platform (<SOC>) to ${JETSON_PLAT}"
 
 pushd ${ICACHE_DIR}/Linux_for_Tegra/rootfs/etc/apt/sources.list.d
