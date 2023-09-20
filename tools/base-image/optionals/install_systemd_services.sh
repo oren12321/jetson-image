@@ -21,7 +21,7 @@ IFS=$'\t\n'   # Split on newlines and tabs (but not on spaces)
 #}}}
 
 #{{{ Imports
-source ${script_dir}/../../aux/log.sh
+source ${script_dir}/../../utils/log.sh
 #}}}
 
 #{{{ Helper functions
